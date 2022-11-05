@@ -37,6 +37,7 @@ interest_by_user_id = defaultdict(list)
 for user_id, interest in interests:
     interest_by_user_id[user_id].append(interest)
 print(interest_by_user_id)
+print("=" * 50)
 
 
 # Find out who has the most interests in common with a user
@@ -48,7 +49,19 @@ def most_common_interests_with(user):
     )
 
 
-# FInd data scientists with common interests
+# Find data scientists with common interests
 def data_scientists_who_like(target_interest):
     """Find the ids of all users who like the target interest."""
     return [user_id for user_id, user_interest in interests if user_interest == target_interest]
+
+
+# Count the number of words in the list above to find the most popular subject
+words_and_counts = Counter(
+	word for user, interest in interests for word in interest.lower().split()
+)
+print(words_and_counts)
+print("=" * 50)
+
+for word, count in words_and_counts.most_common():
+    if count > 1:
+        print(word, count)
