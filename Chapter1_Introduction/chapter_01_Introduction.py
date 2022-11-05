@@ -1,4 +1,6 @@
 # Chapter 1: Introduction
+from collections import Counter
+
 
 # Create a list for users
 users = [
@@ -62,3 +64,29 @@ num_friends_by_id = [(user["id"], number_of_friends(user)) for user in users]
 print(num_friends_by_id)
 num_friends_by_id.sort(key=lambda id_and_friends:id_and_friends[1], reverse=True)
 print("Each pair is (user_id, num_friends){}".format(num_friends_by_id))
+print("=" * 50)
+
+
+# Data Scientists you may know: find friends of friends
+def foaf_ids_bad(user):
+    """
+    foaf is short for friend of a friend
+    """
+    return [foaf_id for friend_id in friendships[user["id"]] for foaf_id in friendships[friend_id]]
+
+
+print(foaf_ids_bad(users[0]))
+print("=" * 50)
+
+# The results above show that we are double-counting so we need to remove it
+def friends_of_friends(user):
+    user_id = user["id"]
+    return Counter(
+            foaf_id
+            for friend_id in friendships[user_id]
+            for foaf_id in friendships[friend_id]
+            if foaf_id != user_id and foaf_id not in friendships[user_id]
+            )
+
+
+print(f"User 'Chi' has these mutual friends {friends_of_friends(users[3])}")
