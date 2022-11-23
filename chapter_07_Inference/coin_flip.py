@@ -139,3 +139,19 @@ if __name__ == "__main__":
 
 	print(extreme_value_count / 1000)
 
+	# Confidence Intervals for 525 coins
+	p_hat = 525 / 1000
+	mu = p_hat
+	sigma = math.sqrt(p_hat * (1 - p_hat) / 1000)
+	print(f"The standard deviation for 525 heads in 1000 coin flips is {sigma}")
+	print(f"The 95% confidence interval for 525 coin flips is {normal_two_sided_bound(0.95, mu, sigma)}")
+
+	# Confidence interval for 540 heads in 1000 coin flips
+	p_hat = 540 / 1000
+	mu = p_hat
+	sigma = math.sqrt(p_hat * (1 - p_hat) / 1000)
+	print(f"The standard deviation for 540 heads in 1000 coin flips is {sigma}")
+	print(f"The 95% confidence interval for 540 coin flips is {normal_two_sided_bound(0.95, mu, sigma)}")
+
+
+
