@@ -1,5 +1,6 @@
 from typing import Tuple
 import math
+import random
 
 
 # CDF was defined in the previous section, but let's define it again
@@ -85,6 +86,20 @@ def normal_two_sided_bound(probability: float, mu: float = 0, sigma: float = 1) 
 	return lower_bound, upper_bound
 
 
+# Define function for p-value
+def two_sided_p_value(x: float, mu: float = 0, sigma: float = 1) -> float:
+	"""Calculate how likely we are to see a value at least as extreme as x in either direction
+	if our values are from an N(mu, sigma)
+	"""
+	if x >= mu:
+		# x is greater than the mean, so the tail is everything greater than x
+		return 2 * normal_probability_above(x, mu, sigma)
+
+	else:
+		# x is less than the mean, so the tail is everything less than x
+		return 2 * normal_probability_below(x, mu, sigma)
+
+
 if __name__ == "__main__":
 	mu_0, sigma_0 = normal_approximation_to_binomial(1000, 0.5)  # 1000*0.5, sqrt(1000 * 0.5 * 0.5)
 	print(mu_0, sigma_0)
@@ -110,3 +125,17 @@ if __name__ == "__main__":
 	type_2_probability = normal_probability_below(hi, mu_1, sigma_1)
 	power = 1 - type_2_probability
 	print(power)
+
+	# for 230 heads
+	print(two_sided_p_value(529.5, mu_0, sigma_0))
+
+	# To confirm p-value carry out a simulation
+	extreme_value_count = 0
+	for _ in range(1000):
+		num_heads = sum(1 if random.random() < 0.5 else 0 for _ in range(1000))
+
+		if num_heads >= 530 or num_heads <= 470:
+			extreme_value_count += 1
+
+	print(extreme_value_count / 1000)
+
