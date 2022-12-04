@@ -1,6 +1,6 @@
 import random
 from typing import List
-from basis_code import distance, add, scalar_multiply
+from basis_code import distance, add, scalar_multiply, vector_mean
 
 
 Vector = List[float]
@@ -26,3 +26,24 @@ for epoch in range(1000):
 	print(epoch, v)
 
 print(distance(v, [0, 0, 0]))
+
+
+def linear_gradient(x: float, y: float, theta:Vector) -> Vector:
+	slope, intercept = theta
+	predicted = slope * x + intercept
+	error = (predicted - y)
+	squared_error = error ** 2
+	grad = [2 * error * x, 2 * error]
+	return grad
+
+
+theta = [random.uniform(-1, 1), random.uniform(-1,1)]
+learning_rate = 0.001
+
+inputs = [(x, 20 * x + 5) for x in range(-50, 50)]
+for epochs in range(5000):
+	# compute gradient mean
+	grad = vector_mean([linear_gradient(x, y, theta) for x, y in inputs])
+	# Take a step in that direction
+	theta = gradient_step(theta, grad, -learning_rate)
+	print(epochs, theta)
