@@ -112,3 +112,12 @@ def make_matrix(num_rows: int, num_cols: int, entry_fn: Callable[[int, int], flo
 def identity_matrix(n: int) -> Matrix:
 	"""Returns the n x n identity matrix"""
 	return make_matrix(n, n, lambda i, j: 1 if i == j else 0)
+
+
+def linear_gradient(x: float, y: float, theta:Vector) -> Vector:
+	slope, intercept = theta
+	predicted = slope * x + intercept
+	error = (predicted - y)
+	squared_error = error ** 2
+	grad = [2 * error * x, 2 * error]
+	return grad
