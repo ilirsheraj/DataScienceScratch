@@ -114,6 +114,13 @@ def identity_matrix(n: int) -> Matrix:
 	return make_matrix(n, n, lambda i, j: 1 if i == j else 0)
 
 
+def gradient_step(v: Vector, gradient: Vector, step_size: float) -> Vector:
+	"""Moves `step_size` in the gradient direction from v"""
+	assert len(v) == len(gradient)
+	step = scalar_multiply(step_size, gradient)
+	return add(v, step)
+
+
 def linear_gradient(x: float, y: float, theta:Vector) -> Vector:
 	slope, intercept = theta
 	predicted = slope * x + intercept
@@ -121,3 +128,15 @@ def linear_gradient(x: float, y: float, theta:Vector) -> Vector:
 	squared_error = error ** 2
 	grad = [2 * error * x, 2 * error]
 	return grad
+
+
+def minibatches(dataset: List[T], batch_size: int, shuffle: bool=True) -> Iterator[List[T]]:
+	"""The function generates batch_size minibatches from the dataset"""
+	# start indexes 0, batch_size, 2 * batch_size,...
+	batch_starts = [start for start in range(0, len(dataset), batch_size)]
+	if shuffle:
+		random.shuffle(batch_starts)
+
+	for start in batch_starts:
+		end = start + batch_size
+		yield dataset[start:end]
