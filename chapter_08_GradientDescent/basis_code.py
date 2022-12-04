@@ -1,9 +1,12 @@
-from typing import List, Callable, Tuple
+from typing import TypeVar, List, Callable, Tuple, Iterator
 import math
 
 
 Vector = List[float]
 Matrix = List[List[float]]
+T = TypeVar("T")
+
+
 def dot(v: Vector, w: Vector) -> float:
 	"""Computes the dot product of two vectors"""
 	assert len(v) == len(w), "Vectors must be the same length"
